@@ -65,7 +65,18 @@ def parse_name(artist)
       last_name = japanese_english_array[1].chomp("]")
       puts "Last Name: #{last_name}"
     end
+  elsif artist.downcase.start_with?('the ') || artist.downcase.start_with?('a ')  || artist.downcase.start_with?('an ')
+    artist_array = artist.split(' ', 2)
+    first_name = artist_array[0]
+    puts "First Name: #{first_name}"
+    last_name = artist_array[1]
+    puts "Last Name: #{last_name}"
+  else
+    last_name = artist
+    puts "Last Name: #{last_name}"
   end
 end
 
-parse_name("山岡晃 [Akira Yamaoka]")
+fetched_artists.each do |artist|
+  parse_name(artist)
+end
