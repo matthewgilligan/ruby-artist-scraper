@@ -52,29 +52,30 @@ fetched_artists = ["Fishmans", "Boris", "山岡晃 [Akira Yamaoka]", "Boris", "B
 
 def parse_name(artist)
   if artist.include? "["
-    japanese_english_array = artist.split('[')
-    japanese_name = japanese_english_array[0]
-    puts "Japanese Name: #{japanese_name}"
-    if japanese_english_array[1].include? " "
-      english_array = japanese_english_array[1].split(" ")
-      first_name = english_array[0]
-      puts "First Name: #{first_name}"
-      last_name = english_array[1].chomp("]")
-      puts "Last Name: #{last_name}"
-    else 
-      last_name = japanese_english_array[1].chomp("]")
-      puts "Last Name: #{last_name}"
-    end
+    parse_traditional_japanese(artist)
   elsif artist.downcase.start_with?('the ') || artist.downcase.start_with?('a ')  || artist.downcase.start_with?('an ')
-    artist_array = artist.split(' ', 2)
-    first_name = artist_array[0]
-    puts "First Name: #{first_name}"
-    last_name = artist_array[1]
-    puts "Last Name: #{last_name}"
-  else
+    parse_article(artist)
+  elsif artist.include?(" ") == false
     last_name = artist
-    puts "Last Name: #{last_name}"
   end
+end
+
+def parse_traditional_japanese(artist)
+  japanese_english_array = artist.split('[')
+  japanese_name = japanese_english_array[0]
+  if japanese_english_array[1].include? " "
+    english_array = japanese_english_array[1].split(" ")
+    first_name = english_array[0]
+    last_name = english_array[1].chomp("]")
+  else 
+    last_name = japanese_english_array[1].chomp("]")
+  end
+end
+
+def parse_article(artist)
+  artist_array = artist.split(' ', 2)
+  first_name = artist_array[0]
+  last_name = artist_array[1]
 end
 
 fetched_artists.each do |artist|
