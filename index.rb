@@ -1,47 +1,71 @@
 require 'nokogiri'
 require 'open-uri'
   
-def fetch_artists
-  page_number = 1
-  url = "https://rateyourmusic.com/customchart?page=#{page_number}&chart_type=top&type=album&year=alltime&genre_include=1&include_child_genres=1&genres=&include_child_genres_chk=1&include=both&origin_countries=japan&limit=none&countries="
-  file = open(url).read
-  doc = Nokogiri::HTML(file)
+# def fetch_artists
+#   page_number = 1
+#   url = "https://rateyourmusic.com/customchart?page=#{page_number}&chart_type=top&type=album&year=alltime&genre_include=1&include_child_genres=1&genres=&include_child_genres_chk=1&include=both&origin_countries=japan&limit=none&countries="
+#   file = open(url).read
+#   doc = Nokogiri::HTML(file)
 
-  artists = doc.search('.chart_detail_line1 a').first(5)
+#   artists = doc.search('.chart_detail_line1 a').first(5)
   
-  artists_array = []
+#   artists_array = []
 
-  artists.each do |artist|
-    artist_array << artist.text.strip      
-  end
+#   artists.each do |artist|
+#     artist_array << artist.text.strip      
+#   end
 
-  p links_array
-end
+#   p links_array
+# end
 
-fetch_recipes
+# fetch_recipes
 
-def scrape_recipes(artist)
-  url = "https://rateyourmusic.com/artist/#{artist}"
-  file = open(url).read
-  doc = Nokogiri::HTML(file)
+# def scrape_recipes(artist)
+#   url = "https://rateyourmusic.com/artist/#{artist}"
+#   file = open(url).read
+#   doc = Nokogiri::HTML(file)
 
-  first_name = 
-  last_name = 
-  japanese_name = 
-  place_of_origin = 
-  date_of_birth =
-  date_of_death = 
-  aka =
+#   first_name = 
+#   last_name = 
+#   japanese_name = 
+#   place_of_origin = 
+#   date_of_birth =
+#   date_of_death = 
+#   aka =
     
-  return {
-    first_name: first_name
-    last_name: last_name
-    japanese_name: japanese_name
-    place_of_origin: place_of_origin
-    date_of_birth: date_of_birth
-    date_of_death: date_of_birth
-    aka = aka
-  }
-end
+#   return {
+#     first_name: first_name
+#     last_name: last_name
+#     japanese_name: japanese_name
+#     place_of_origin: place_of_origin
+#     date_of_birth: date_of_birth
+#     date_of_death: date_of_birth
+#     aka = aka
+#   }
+# end
 
 # name = doc.search('.recipe-header__title').text.strip
+
+
+fetched_artists = ["Fishmans", "Boris", "山岡晃 [Akira Yamaoka]", "Boris", "Boredoms"]
+
+
+def parse_name(artist)
+  if artist.include? "["
+    japanese_english_array = artist.split('[')
+    japanese_name = japanese_english_array[0]
+    puts "Japanese Name: #{japanese_name}"
+    if japanese_english_array[1].include? " "
+      english_array = japanese_english_array[1].split(" ")
+      first_name = english_array[0]
+      puts "First Name: #{first_name}"
+      last_name = english_array[1].chomp("]")
+      puts "Last Name: #{last_name}"
+    else 
+      last_name = japanese_english_array[1].chomp("]")
+      puts "Last Name: #{last_name}"
+    end
+  end
+end
+
+parse_name("山岡晃 [Akira Yamaoka]")
