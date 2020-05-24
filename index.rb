@@ -28,16 +28,18 @@ def scrape_artist(artist)
   formed_or_born = doc.search('.info_hdr')[0].text.strip
   artist_type = person_or_band(formed_or_born)
   
-  parsed_name = parse_person_name(artist)
-  first_name = parsed_name[:first_name] if parsed_name.key?(:first_name)
-  
-  if artist_type == "Born"
-    last_name = parsed_name[:last_name] if parsed_name.key?(:last_name)
+  if letters?(artist) == false
+    japanese_name = artist 
   else
+    if artist_type == "Person"
+      parsed_name = parse_person_name(artist)
+    else
+      parsed_name = parse_band_name(artist)
+    end
+    first_name = parsed_name[:first_name] if parsed_name.key?(:first_name)
     last_name = parsed_name[:last_name] if parsed_name.key?(:last_name)
+    japanese_name = parsed_name[:japanese_name] if parsed_name.key?(:japanese_name)
   end
-
-  japanese_name = parsed_name[:japanese_name] if parsed_name.key?(:japanese_name)
 
   # place_of_origin = 
   # date_of_birth =
@@ -66,4 +68,8 @@ def person_or_band(formed_or_born)
   end
 
   return artist_type
+end
+
+def letters?(string)
+  string.chars.any? { |char| ('a'..'z').include? char.downcase }
 end
