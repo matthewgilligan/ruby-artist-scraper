@@ -3,6 +3,8 @@ def parse_person_name(artist)
   
   if artist.include? "["
     return parse_traditional_japanese(artist)
+  elsif letters?(artist) == false
+    name_hash[:japanese_name] = artist
   elsif artist.downcase.start_with?('the ') || artist.downcase.start_with?('a ')  || artist.downcase.start_with?('an ')
     return parse_article(artist)
   elsif artist.include?(" ") == false
@@ -17,6 +19,8 @@ def parse_band_name(artist)
   
   if artist.include? "["
     return parse_japanese_band(artist)
+  elsif letters?(artist) == false
+    name_hash[:japanese_name] = artist
   elsif artist.downcase.start_with?('the ') || artist.downcase.start_with?('a ')  || artist.downcase.start_with?('an ')
     return parse_article(artist)
   else
@@ -70,8 +74,11 @@ def parse_article(artist)
   return name_hash
 end
 
+def letters?(string)
+  string.chars.any? { |char| ('a'..'z').include? char.downcase }
+end
 
-fetched_artists = ["Fishmans", "Melt Banana", "山岡晃 [Akira Yamaoka]", "The Seatbelts", "Boredoms", "山岡晃 [The Spring Hold]"]
+fetched_artists = ["Fishmans", "Melt Banana", "山岡晃 [Akira Yamaoka]", "The Seatbelts", "Boredoms", "山岡晃 [The Spring Hold]", "坂本龍一"]
 
 fetched_artists.each do |artist|
   p parse_band_name(artist)
